@@ -5,6 +5,7 @@
 " ============================================================================
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
+let s:py_say_file = expand('<sfile>:p:h') . '/../script/say.py'
 
 if !exists('s:python_executable')
   if exists('g:python3_host_prog') && executable('g:python3_host_prog')
@@ -31,6 +32,7 @@ function! translator#start(displaymode, bang, range, line1, line2, argstr) abort
   let options = translator#cmdline#parse(a:bang, a:range, a:line1, a:line2, a:argstr)
   if options is v:null | return | endif
   call translator#translate(options, a:displaymode)
+  call translator#say(options.text)
 endfunction
 
 function! translator#translate(options, displaymode) abort
@@ -51,4 +53,16 @@ function! translator#translate(options, displaymode) abort
   endif
   call translator#logger#log(join(cmd, ' '))
   call translator#job#jobstart(cmd, a:displaymode)
+endfunction
+
+" text to speech
+function! translator#say(origin_text) abort
+  let cmd = [
+        \ s:python_executable,
+        \ s:py_say_file,
+        \ a:origin_text
+        \ ]
+
+  call translator#logger#log(join(cmd, ' '))
+  call translator#audio#jobstart(cmd)
 endfunction
