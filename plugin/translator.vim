@@ -37,6 +37,8 @@ vnoremap <silent> <Plug>TranslateWV :TranslateW<CR>
 nnoremap <silent> <Plug>TranslateR  viw:<C-u>TranslateR<CR>
 vnoremap <silent> <Plug>TranslateRV :TranslateR<CR>
 nnoremap <silent> <Plug>TranslateX  :TranslateX<CR>
+nnoremap <silent> <Plug>TranslateA  :TranslateA<CR>
+vnoremap <silent> <Plug>TranslateAV :TranslateA<CR>
 
 command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
   \ Translate
@@ -53,6 +55,10 @@ command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
 command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
   \ TranslateX
   \ call translator#start('echo', <bang>0, <range>, <line1>, <line2>, <q-args> . ' ' . @*)
+
+command! -nargs=* -bang -range
+  \ TranslateA
+  \ call translator#start_say(<bang>0, <range>, <line1>, <line2>, <q-args>)
 
 command! -nargs=0   TranslateH call translator#history#export()
 

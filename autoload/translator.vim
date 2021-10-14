@@ -6,6 +6,7 @@
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 let s:py_say_file = expand('<sfile>:p:h') . '/../script/say.py'
+let s:script_working_dir = expand('<sfile>:p:h') . '/..'
 
 if !exists('s:python_executable')
   if exists('g:python3_host_prog') && executable('g:python3_host_prog')
@@ -38,6 +39,12 @@ function! translator#start(displaymode, bang, range, line1, line2, argstr) abort
   endif
 endfunction
 
+function! translator#start_say(bang, range, line1, line2, argstr) abort 
+  let options = translator#cmdline#parse(a:bang, a:range, a:line1, a:line2, a:argstr)
+  if options is v:null | return | endif
+  call translator#say(options.text)
+endfunction
+
 function! translator#translate(options, displaymode) abort
   let cmd = [
         \ s:python_executable,
@@ -63,6 +70,7 @@ function! translator#say(origin_text) abort
   let cmd = [
         \ s:python_executable,
         \ s:py_say_file,
+        \ s:script_working_dir,
         \ a:origin_text
         \ ]
 
