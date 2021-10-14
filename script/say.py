@@ -11,8 +11,8 @@ import ssl
 import ctypes
 import subprocess
 import sys
+from gtts import gTTS
 ssl._create_default_https_context = ssl._create_unverified_context
-
 
 class GoogleTrans(object):
     def __init__(self):
@@ -186,14 +186,14 @@ class GoogleTrans(object):
         return originalText, originalLanguageCode, targetText, lang_to
 
 def sayIt(filename):
-    #print("+++++++++++++++++++++++++++")
-    subprocess.call(['gtts-cli', filename, '--output', '../temp/temp.mp3'])
-    #print("+++++++++++++++++++++++++++")
+    tts = gTTS(filename, lang='en')
+    tts.save('../temp/temp.mp3')
+    #subprocess.call(['gtts-cli', filename, '--output', '../temp/temp.mp3'])
     subprocess.call(['../tools/cmdmp3.exe', '../temp/temp.mp3'])
 
 if __name__ == '__main__':
     text = sys.argv[1]
-    originalText, originalLanguageCode, targetText, targetLanguageCode = GoogleTrans().query(text, lang_to='zh-CN')  
-    sayIt(originalText)
+    # originalText, originalLanguageCode, targetText, targetLanguageCode = GoogleTrans().query(text, lang_to='zh-CN')  
+    sayIt(text)
     #print("==============================")
     #print(originalText, originalLanguageCode, targetText, targetLanguageCode)
