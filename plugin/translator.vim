@@ -20,6 +20,7 @@ let g:translator_window_borderchars      = get(g:, 'translator_window_borderchar
 let g:translator_window_max_height       = get(g:, 'translator_window_max_height', 999)
 let g:translator_window_max_width        = get(g:, 'translator_window_max_width', 999)
 let g:translator_window_type             = get(g:, 'translator_window_type', 'popup')
+let g:translator_play_audio              = get(g:, 'translator_play_audio', v:false)
 
 if match(g:translator_target_lang, 'zh') >= 0
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['bing', 'google', 'haici', 'youdao'])

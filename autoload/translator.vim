@@ -32,7 +32,10 @@ function! translator#start(displaymode, bang, range, line1, line2, argstr) abort
   let options = translator#cmdline#parse(a:bang, a:range, a:line1, a:line2, a:argstr)
   if options is v:null | return | endif
   call translator#translate(options, a:displaymode)
-  call translator#say(options.text)
+
+  if g:translator_play_audio
+    call translator#say(options.text)
+  endif
 endfunction
 
 function! translator#translate(options, displaymode) abort
