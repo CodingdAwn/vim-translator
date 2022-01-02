@@ -6,6 +6,7 @@
 import subprocess
 import sys
 import os
+import platform
 from gtts import gTTS
 
 def sayIt(working_dir, text):
@@ -18,13 +19,18 @@ def sayIt(working_dir, text):
 
     f.write("call: " + working_dir + '/tools/cmdmp3.exe' + "\n")
     f.write("call: " + working_dir + '/temp/temp.mp3' + "\n")
-    f.close()
 
     cwd = os.getcwd()
     os.chdir(working_dir)
+    system_name = platform.system()
+    f.write("system: " + system_name)
+    f.close()
+    if platform.system() == "Darwin":
+        subprocess.call(['afplay', working_dir + '/temp/temp.mp3'])
+    else:
+        # 使用cmdmp3.exe的话 如果mp3文件在wsl中 而当前工作目录在mnt目录 执行会失败找不到文件
+        subprocess.call([working_dir + '/tools/cmdmp3.exe', working_dir + '/temp/temp.mp3'])
 
-    # 使用cmdmp3.exe的话 如果mp3文件在wsl中 而当前工作目录在mnt目录 执行会失败找不到文件
-    subprocess.call([working_dir + '/tools/cmdmp3.exe', working_dir + '/temp/temp.mp3'])
     os.chdir(cwd)
 
 if __name__ == '__main__':
